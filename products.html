@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Centered Nav Bar with Icons, Search, and Background</title>
+<!-- Font Awesome CDN -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+<link rel="stylesheet" type="text/css" href="products.css">
+</head>
+<body>
+<style>
+  
+</style>
+
+<!-- Fixed Cart Icon -->
+<div id="cartIconContainer" style="position: fixed; top: 100px; right: 410px; z-index: 999;">
+  <i class="fas fa-shopping-cart" id="cartIcon" style="font-size: 24px; cursor: pointer; color: white;"></i>
+</div>
+
+<div class="navbar">
+  <a href="homejoe.html" class="nav-item home">
+    <i class="fas fa-home"></i>HOME
+  </a>
+  <a href="services.html" class="nav-item services">
+    <i class="fas fa-cogs"></i>SERVICES
+  </a>
+  <a href="products.html" class="nav-item mycart">
+    <i class="fas fa-shopping-cart"></i>MY CART
+  </a>
+  <a href="sign in.html" class="nav-item signin">
+    <i class="fas fa-user"></i>SIGN IN
+  </a>
+</div>
+
+<div class="products-container">
+  <!-- Battery Replacement -->
+  <div class="product-card">
+    <img src="Battery-Replacement-1.png" alt="Battery Replacement" class="product-image" />
+    <h3 class="product-name">Battery Replacement</h3>
+    <p class="product-price">P250.00</p>
+    <button class="buy-button">Buy</button>
+  </div>
+  
+  <!-- Screen Protectors -->
+  <div class="product-card">
+    <img src="screen.jpeg" alt="Screen Protectors" class="product-image" />
+    <h3 class="product-name">Screen Protectors</h3>
+    <p class="product-price">P50.00</p>
+    <button class="buy-button">Buy</button>
+  </div>
+  
+  <!-- Earbuds -->
+  <div class="product-card">
+    <img src="earbuds.jpeg" alt="Earbuds" class="product-image" />
+    <h3 class="product-name">Earbuds</h3>
+    <p class="product-price">P100.00</p>
+    <button class="buy-button">Buy</button>
+  </div>
+  
+  <!-- Screen Replacement -->
+  <div class="product-card">
+    <img src="Phone-Screen-Repairs.jpeg" alt="Screen Replacement" class="product-image" />
+    <h3 class="product-name">Screen Replacement</h3>
+    <p class="product-price">P400.00</p>
+    <button class="buy-button">Buy</button>
+  </div>
+  
+  <!-- Camera Replacement -->
+  <div class="product-card">
+    <img src="phone-camera.jpeg" alt="Camera Replacement" class="product-image" />
+    <h3 class="product-name">Camera Replacement</h3>
+    <p class="product-price">P250.00</p>
+    <button class="buy-button">Buy</button>
+  </div>
+  
+  <!-- Charging Ports -->
+  <div class="product-card">
+    <img src="iPhone-Charging-Port-Repair-Options-Costs-and-Considerations_480x480.png" alt="Charging Ports" class="product-image" />
+    <h3 class="product-name">Charging Ports</h3>
+    <p class="product-price">P150.00</p>
+    <button class="buy-button">Buy</button>
+  </div>
+  
+  <!-- Power Flex -->
+  <div class="product-card">
+    <img src="sp0468-500x500.jpeg" alt="Power Flex" class="product-image" />
+    <h3 class="product-name">Power Flex</h3>
+    <p class="product-price">P100.00</p>
+    <button class="buy-button">Buy</button>
+  </div>
+
+  <!-- Phone Cases -->
+  <div class="product-card">
+    <img src="cases.jpeg" alt="Phone Cases" class="product-image" />
+    <h3 class="product-name">Phone Cases</h3>
+    <p class="product-price">P100.00</p>
+    <button class="buy-button">Buy</button>
+  </div>
+</div>
+
+<!-- Cart Modal -->
+<div id="cartModal" style="display:none; position: fixed; top:0; left:0; width:100%; height:100%; background-color: rgba(0,0,0,0.4); z-index: 9999;">
+  <div style="background:#fff; margin: 110px auto 0 auto; padding:20px; width: 80%; max-width: 400px; position: relative;">
+    <span id="closeModal" style="position: absolute; top:10px; right:15px; font-size:24px; cursor:pointer;">&times;</span>
+    <h2>Your Cart</h2>
+    <ul id="cartItems"></ul>
+  </div>
+</div>
+
+<!-- Footer -->
+<footer>
+  <a class="footer-item" href="tel:+26777066548">
+    <i class="fab fa-whatsapp"></i> +267 770 665 48
+  </a>
+  <a class="footer-item" href="https://twitter.com/JM_Cellphone_repairs" target="_blank">
+    <i class="fab fa-twitter"></i> JM Cellphone repairs
+  </a>
+  <a class="footer-item" href="https://facebook.com/JM.Cellphone.repair" target="_blank">
+    <i class="fab fa-facebook"></i> JM Cellphone repairs
+  </a>
+  <a class="footer-item" href="mailto:lmcellphonerepairs@gmail.com">
+    <i class="fas fa-envelope"></i> lmcellphonerepairs@gmail.com
+  </a>
+</footer>
+
+<script>
+  const cart = [];
+  const cartIcon = document.getElementById('cartIcon');
+  const modal = document.getElementById('cartModal');
+  const closeModal = document.getElementById('closeModal');
+  const cartItems = document.getElementById('cartItems');
+
+  // Show modal on icon click
+  document.getElementById('cartIconContainer').onclick = () => {
+    renderCart();
+    modal.style.display = 'block';
+  };
+
+  // Hide modal on close
+  closeModal.onclick = () => {
+    modal.style.display = 'none';
+  };
+
+  // Close modal if clicking outside the inner box
+  window.onclick = (e) => {
+    if (e.target == modal) {
+      modal.style.display = 'none';
+    }
+  };
+
+  // Add to cart when buy button clicked
+  document.querySelectorAll('.buy-button').forEach(btn => {
+    btn.onclick = (e) => {
+      const product = e.target.closest('.product-card');
+      const name = product.querySelector('.product-name').innerText;
+      const price = product.querySelector('.product-price').innerText;
+      cart.push({ name, price });
+      alert(`${name} added to cart`);
+    };
+  });
+
+  function renderCart() {
+    cartItems.innerHTML = '';
+    if (cart.length === 0) {
+      cartItems.innerHTML = '<li>Your cart is empty.</li>';
+      return;
+    }
+    cart.forEach(item => {
+      const li = document.createElement('li');
+      li.innerHTML = `${item.name} - ${item.price}`;
+      cartItems.appendChild(li);
+    });
+  }
+</script>
+
+</body>
+</html>
